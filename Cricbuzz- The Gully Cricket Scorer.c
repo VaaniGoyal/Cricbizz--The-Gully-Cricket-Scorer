@@ -32,31 +32,45 @@ void toss(char call[])             //function responsible for simulating toss
         result[3]='l';
     }
     printf("Toss Result: ");
-    for(int i=0;i<4;i++)
+    for(int i=0;i<4;i++)                    //printing head/tail
     {
         printf("%c",result[i]);
     }
-    char choice[4];
-    if(call[0]==result[0])
+    int choice;
+    if(call[0]==result[0])                 //If sir won the toss
     {
         printf("\nYou won the toss!\n");           
-        printf("Sir, what do you choose (bat/bowl): ");    
-        scanf("%s",choice);
+        printf("Sir, what do you choose (bat(1)/bowl(2)): ");    
+        
     }
-    else
+    else                                 //If student won the toss
     {
         printf("\nYou lost the toss!\n");
-        printf("Student, what do you choose (bat/bowl): ");
-        scanf("%s",choice);
+        printf("Student, what do you choose (bat(1)/bowl(2)): ");
+        
     }
+    while (1)
+    {
+        scanf("%d", &choice);
+        if (choice==1 || choice==2)
+        {
+            break;
+        }
+        else
+        {
+            printf("INVALID INPUT enter again\n");
+        }
+        
+    }
+    
     printf("So, team1 will bat first.\n");
 }
 void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
     int mainruns=0;                                                    // function to record the data of innings
     int wickets=0;
-    int count = n-1;
-    int b1=0;
-    int b2=1;
+    int count = n-1;                    //Bowler
+    int b1=0;                          //batter 1 Stricker
+    int b2=1;                          //batter 2 Non Stricker
     int next=2;
     playerinfo a=team1[b1];
     playerinfo b=team1[b2];
@@ -65,7 +79,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
     a.runs=0;
     b.ballsplayed=0;
     b.runs=0;
-    int flag=-1;
+    int flag=-1;                              //flag for striker and non striker
     int d;
     for (int i = 1; i <= overs; i++)                                     //loop for doing calculations and maintaining scoreboard of batsmen
     {   d=0;
@@ -80,11 +94,11 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
             if (flag==1 && d==0)
             {d++;
                 switch(input){                                            //switch case is used for diffrent possible cases
-                case '0':b.ballsplayed++;
+                case '0':b.ballsplayed++;                                 //for dot ball
                         printf("dot ball, short outside off,left alone to the keeper\n");
 
                          break;
-                case '1':b.runs++;
+                case '1':b.runs++;   //for 1 run
                         mainruns++;
                         printf("1 run, tuck towars deep midwicket\n");
 
@@ -93,7 +107,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                         b.ballsplayed++;
                          flag*=-1;
                           break;
-                case '2':b.runs+=2;
+                case '2':b.runs+=2;  //for 2 runs
                         mainruns+=2;
                         team2[count].runsgiven+=2;
                        printf("2 runs, banged short on off from the wicket.\n");
@@ -101,7 +115,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                         c.runsgiven+=2;
                         b.ballsplayed++;
                           break;
-                case '3':b.runs+=3;
+                case '3':b.runs+=3;   //for 3 runs
                         mainruns+=3;
                         team2[count].runsgiven+=3;
                          printf("fielding ka bhut hi khrab pradarshan aur 3 run\n");
@@ -110,7 +124,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                         b.ballsplayed++;
                         flag*=-1;
                           break;
-                case '4':b.runs+=4;
+                case '4':b.runs+=4;  // for a four
                         mainruns+=4;
                         b.four++;
                         printf("it's a four, straight drive and a boundary\n ");
@@ -119,7 +133,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                         c.runsgiven+=4;
                         b.ballsplayed++;
                           break;
-                case '6':b.runs+=6;
+                case '6':b.runs+=6;  // for a six
                         mainruns+=6;
                         b.six++;
                         team2[count].runsgiven+=6;
@@ -128,16 +142,13 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                         c.runsgiven+=6;
                         b.ballsplayed++;
                         break;
-                case 'W':printf("OUT\n");
+                case 'W':printf("OUT\n");  // If wicket taken
                         team2[count].wickets++;
                         printf("ballebazZZ ko pta bhi nahi chla or saare dande ud gye\n");
 
                         c.wickets++;
                         wickets++;
-                        if (wickets==n-1)
-                        {
-                            break;
-                        }
+                        
                         if (flag==-1)
                         {
                             a.ballsplayed++;
@@ -156,8 +167,12 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                             b=team1[next];
                             next++;
                         }
+                        if (wickets==n-1)
+                        {
+                            break;
+                        }
                         break;
-                case 'w':mainruns++;
+                case 'w':mainruns++;  //wide ball
                         team2[count].runsgiven+=1;
                         c.runsgiven+=1;
                         j--;
@@ -175,7 +190,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
             if (flag==-1 && d==0)
             {d++;
                 switch(input){
-                case '0':a.ballsplayed++;                                             //loop for doing calculations and maintaining scoreboard of bowlers
+                case '0':a.ballsplayed++;                                             //switch case for doing calculations and maintaining scoreboard of bowlers
                         printf("dot ball, short outside off,left alone to the keeper\n");
                          break;
                 case '1':a.runs++;
@@ -222,10 +237,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                         printf("ballebazZZ ko pta bhi nahi chla or saare dande ud gye\n");
                         c.wickets++;
                         wickets++;
-                        if (wickets==n-1)
-                        {
-                            break;
-                        }
+                        
                         
                         if (flag==-1)
                         {
@@ -245,7 +257,10 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
                             b=team1[next];
                             next++;
                         }
-                        
+                        if (wickets==n-1)
+                        {
+                            break;
+                        }
                         break;
                 case 'w':mainruns++;
                         team2[count].runsgiven+=1;
@@ -291,7 +306,7 @@ void innings(playerinfo team1[], playerinfo team2[], int overs, int n){
             }
         team2[count].oversbowled++;
             
-            printf("\nTotal Runs:%d     ", mainruns);
+            printf("\nTotal Runs:%d     ", mainruns);//printing total runs
             printf("score of %s:%d(%d)    ",a.name,a.runs,a.ballsplayed);
             printf("score of %s:%d(%d)\n    ",b.name,b.runs,b.ballsplayed);
            
@@ -335,15 +350,13 @@ void batterscore(playerinfo a[],int n)                               //function 
     printf ( "------------------------------------------------------------------------------------------------\n " ) ;  
     for(int i=0;i<n;i++)  
     {  
-        if(a[i].ballsplayed!=0)
-        {
-            float strike = ((float)a[i].runs/a[i].ballsplayed)*100;
+        	float strike=0;
+             if(a[i].ballsplayed!=0)
+             {
+             	strike = ((float)a[i].runs/a[i].ballsplayed)*100;
+             }
             printf ( " %-15s %-14d %-13d %-11d %-11d %-11.2f \n\n " , a[i].name, a[i].runs, a[i].ballsplayed, a[i].four,  a[i].six, strike);
-        }
-        else
-        {
-            printf ( " %-15sDNB            DNB          DNB           DNB           DNB \n\n " , a[i]. name ) ;
-        }
+        
     }
 }
 
@@ -401,7 +414,7 @@ int main(){
         team2[i].ballsbowled=0;
     }
 
-    printf("\n\nUSER GUIDE\n");
+    printf("\n\nUSER GUIDE\n");//user guide
     printf("enter 4 for four runs\n");
     printf("enter 6 for six runs\n");
     printf("enter 0 for dot ball\n");
@@ -445,9 +458,7 @@ int main(){
     else if(mainscore2>=mainscore1)
     {
         remaining=p-wickets2;
-        printf("Team 2 won by %d wickets",remaining);
+        printf("Team 2 won by %d wickets",remaining);//declaration of final results
     }
     return 0;
 }
-
-
